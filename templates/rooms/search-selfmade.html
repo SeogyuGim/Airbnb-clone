@@ -1,0 +1,124 @@
+{% extends 'base.html' %}
+
+{% block page_title %}
+    Search
+{% endblock page_title %}
+
+{% block search-bar %}
+{% endblock search-bar %}
+
+{% block content %}
+
+    <h2>Search!</h2>
+
+
+    <form method="get" action="{% url "rooms:search" %}">
+
+        <div>
+            <lable for="city">City </lable>
+            <input value="{{city}}" id="city" name="city" placeholder="Search by city" />
+        </div>
+
+        <div>
+            <lable for="country">Country </lable>
+            <select id="country" name="country">
+                {% for country in countries %}
+                    <option value="{{country.code}}" {% if country.code == selected_country %}selected{% endif %}>{{country.name}} </option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div>
+            <lable for="room_type">Room Type </lable>
+            <select id="room_type" name="room_type">
+            <option value="0" {% if selected_room_type == 0 %} selected {% endif %}>Any Kind</option>
+                {% for room_type in room_types %}
+                    <option value="{{room_type.pk}}" {% if selected_room_type == room_type.pk %} selected {% endif %}> {{room_type.name}} </option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div>
+            <lable for="price">Price</lable>
+            <input value="{{price}}" type="number" name="price" id="price" placeholder="Price" />
+        </div>
+
+        <div>
+            <lable for="guest">Guest</lable>
+            <input value="{{guest}}" type="number" name="guest" id="guest" placeholder="Guest" />
+        </div>
+
+        <div>
+            <lable for="bedrooms">Bedrooms</lable>
+            <input value="{{bedrooms}}" type="number" name="bedrooms" id="bedrooms" placeholder="Bedrooms" />
+        </div>
+
+        <div>
+            <lable for="beds">Beds</lable>
+            <input value="{{beds}}" type="number" name="beds" id="beds" placeholder="Beds" />
+        </div>
+
+        <div>
+            <lable for="baths">Baths</lable>
+            <input value="{{baths}}" type="number" name="baths" id="baths" placeholder="Baths" />
+        </div>
+
+        <div>
+            <label for="instant">Instant Book Only?</lable>
+            <input type="checkbox" name="instant" id="instant" {% if instant%}checked{% endif %} />
+        </div>
+
+        <div>
+            <label for="superhost">By superhost Only?</lable>
+            <input type="checkbox" name="superhost" id="superhost" {% if superhost %}checked{% endif %} />
+        </div>
+
+        <div>
+            <h3>Amenities</h3>
+            <ul>
+                {% for amenity in amenities %}
+                    <li>
+                        <label for="a_{{amenity.pk}} ">{{amenity.name}}</lable>
+                        <input
+                            id="a_{{amenity.pk}}"
+                            name="amenities"
+                            type="checkbox"
+                            value="{{amenity.pk}}"
+                            {% if amenity.pk|slugify in selected_amenities %}checked{% endif %}
+                        />
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <div>
+            <h3>Facilities</h3>
+            <ul>
+                {% for facility in facilities %}
+                    <li>
+                        <label for="f_{{facility.pk}} ">{{facility.name}}</lable>
+                        <input
+                            id="f_{{facility.pk}}"
+                            name="facilities"
+                            type="checkbox"
+                            value="{{facility.pk}}"
+                            {% if facility.pk|slugify in selected_facilities %}checked{% endif %}
+                        />
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <button>
+            Search
+        </button>
+
+        <h3>Results</h3>
+
+        {% for room in rooms %}
+            <h3>{{room.name}}</h3>
+        {% endfor %}
+
+    </form>
+
+{% endblock content %}
